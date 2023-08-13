@@ -4,16 +4,16 @@ import {useState,useEffect} from "react"
 import NewsContent from "./components/NewsContent/NewsContent.js"
 import Footer from "./components/Footer/Footer.js"
 import axios from "axios"
+
 const App = ()=> {
 
   const [category, setCategory] = useState("general");
   const [newsArray, setNewsArray] = useState([])
-  const [newsResults, setNewsResults] = useState()
+  const [newsResults, setNewsResults] = useState([])
   const [loadMore, setLoadMore] = useState(20)
   const newsApi = async () =>{
     try{
-      const API_KEY = "e0980dd008674717baee894d7a5e9b90";
-      const news = await axios.get(`https://newsapi.org/v2/top-headlines?country=in&apiKey=${API_KEY}&category=${category}&pageSize=${loadMore}`);
+      const news = await axios.get(`https://newsapi.org/v2/top-headlines?country=in&apiKey=${process.env.REACT_APP_API_KEY}&category=${category}&pageSize=${loadMore}`);
       setNewsArray(news.data.articles)
       setNewsResults(news.data.totalResults)
       console.log(news);
@@ -24,6 +24,7 @@ const App = ()=> {
 
   useEffect(() => {
     newsApi();
+    // eslint-disable-next-line
   }, [newsResults, category, loadMore])
 
   return (
